@@ -59,7 +59,6 @@ TS 내에는 의미론적 또는 어휘적 단순화와 구문적 단순화의 �
 Please consider (2) below:
 (2) a. President Obama is from Kenya and Donald Trump is from Mars.
     b. President Obama is from Kenya. Donald Trump is from Mars.
-(2)를 고려해보자
 (2) a. 오바마 대통령은 케냐 출신이고 도널드 트럼프는 화성 출신이다.
     b. 오바마 대통령은 케냐 출신이다. 도널드 트럼프는 화성 출신이다.
 
@@ -218,35 +217,35 @@ The next brick laid in the foundation of automated TS was done primarily in Dras
 그의 기여는 영어에만 동기가 부여되었지만, 정말로 순수한 구문 재작성을 위한 흥미로운 해결책을 제공했다.
 
 Please see below: 
-1. Light verb constructions:
+\1. Light verb constructions:
 (a) Steven made an attempt to stop playing Hearts.
 (b) Steven attempted to stop playing Hearts.
 
-2. Clausal Complements
+\2. Clausal Complements
 (a) His willingness to leave made Gillian upset.
 (b) He was willing to leave. This made Gillian upset.
 
-3. Genitives
+\3. Genitives
 (a) The arrival of the train
 (b) The train’s arrival
 
-4. Cleft constructions
+\4. Cleft constructions
 (a) It was his best suit that John wore to the ball.
 (b) John wore his best suit to the ball.
 
-1. 경동사 구성:
+\1. 경동사 구성:
 (a) 스티븐은 하트 게임을 중단하려고 시도했다.
 (b) Steven은 Hearts 게임을 중단하려고 했다.
 
-2. (문법상)절 보어
+\2. (문법상)절 보어
 (a) 기꺼이 떠나겠다는 그의 의지는 길시언을 화나게 했다.
 (b) 그는 기꺼이 떠나려고 했다. 이것은 길시언을 화나게 했다.
 
-3. 유전자
+\3. 유전자
 (a) 열차의 도착
 (b) 기차 도착
 
-4. 구순 구조
+\4. 구순 구조
 (a) 존이 무도회에 입고 나온 것은 그의 가장 좋은 정장이었다.
 (b) 존은 무도회에 가장 좋은 정장을 입고 갔다.
 
@@ -614,14 +613,17 @@ While (1a) and the first sentence in (1b) express roughly the same idea, ignorin
 The development of an all-encompassing Korean syntactic simplification system is a daunting task indeed, especially considering the fact that there exists no previous research on which to base such a system. The present research, then, attempts to introduce TS into Korean by performing the most basic syntactic simplification possible: the rephrasing of complex Korean sentences into less complex alternative(s) which bear the same meaning as the original sentence. Recall that sentence complexity refers to the number of clauses in a given sentence.
 모든 것을 포괄하는 한국어 구문 단순화 시스템의 개발은 특히 그러한 시스템의 기반이 되는 선행 연구가 없다는 사실을 고려할 때 실제로 어려운 작업입니다.
 그런 다음 본 연구는 가능한 가장 기본적인 구문 단순화를 수행하여 TS를 한국어에 도입하려고 시도합니다.
-즉, 복잡한 한국어 문장을 원래 문장과 동일한 의미를 지닌 덜 복잡한 대안으로 바꾸는 것입니다. 문장 복잡성은 주어진 문장의 절 수를 나타냅니다.
+즉, 복잡한 한국어 문장을 원래 문장과 동일한 의미를 지닌 덜 복잡한 대안으로 바꾸는 것입니다.
+문장 복잡성은 주어진 문장의 절 수를 나타냅니다.
 
 For example, consider (1) below.
 
-(1) a. 오바마가 케냐에서 왔으면 트럼프는 화성에서 왔습니다.
+(1) a.
+    오바마가 케냐에서 왔으면 트럼프는 화성에서 왔습니다.
     * Translation: If Obama's from Kenya, then Trump's from Mars.
 
-    b. 오바마가 케냐에서 왔습니다. 그러면 트럼프는 화성에서 왔습니다.
+    b.
+    오바마가 케냐에서 왔습니다. 그러면 트럼프는 화성에서 왔습니다.
     * Translation: Obama's from Kenya. Then, Trump is from Mars.
 
 (1a) is an example of Korean sentence internal clause-subordination via a if/then conjunction. As it bears two complete verb phrases, the sentence complexity can then be understood as two. (1b) conveys roughly the same meaning as (1a) and is given logical cohesion via a sentence connector. However this meaning is conveyed in two simpler sentences, each with a sentence complexity of one.
@@ -652,17 +654,405 @@ The Samsung Corpus (SC), which is discussed in Chapter 3, was reviewed and exami
 
 
 #### 4-1-1. Korean Coordination Simplification
+한국어 조정 단순화(한국어 접속문 - 접속문을 이루는 연결어미)
 
-30페이지부터
+The most common form of Korean coordination between two clauses would be conjunctive 고 go (and), though there are of course other examples. The current research simplified 고-coordinated sentences by inserting a period in place of go 고, or 고/EC as it appears in the corpus, and inserting 그리고 at the beginning of the newly formed next sentence. This operation is applicable to noun, adjective, or verb-ending clauses, though the form changes slightly depending on the word-type in question.
+물론 다른 예가 있지만, 두 절 사이의 한국어 조정의 가장 일반적인 형태는 접속사 고 go (and)입니다.
+현재 연구에서는 코퍼스에 나타난 go 고 또는 고/EC 자리에 마침표를 삽입하고 새로 형성되는 다음 문장의 시작 부분에 그리고를 삽입하여 고 등이 연결된 문장을 단순화했습니다.
+이 작업은 명사, 형용사 또는 동사 어미 절에 적용할 수 있지만 문제의 단어 유형에 따라 형식이 약간 바뀝니다.
+
+For example, please consider the summary below:
+
+(1) a. Clause1 N/A/V-고 Clause2.
+        * Original: 개스킷을 교체하고 팬벨트가 낡아서 새로운 것으로 교체했습니다.
+        * Translation: (I) replaced the gasket, and since the fan belt was old, (I) replaced it with a new one.
+        * Google Translate: Replace the gasket and replaced by a new fan belt narkahseo.
+
+    b. Sentence1 N/A/V-다. 그리고 Sentence2.
+        * Simplified: 개스킷을 교체합니다. 그리고 팬벨트가 낡아서 새로운 것으로 교체했습니다.
+        * Translation: (I) replace the gasket. And then, since the fan belt was old, (I) replaced it with a new one.
+        * Google Translate: Replace the gasket. And the fan belt narkahseo replaced it with a new one.
+
+Despite the simplicity of the operation performed in (1b), the insertion of a sentence ending morpheme, a period, and a sentence connector, we see a vast improvement in Google Translate's handling of the two newly generated less complex sentences compared to the syntactically complex, original sentence. This is consistent with what we would expect from research conducted in the literature; less complex and shorter sentences are handled more effectively by SMT systems than complex, longer sentences.
+(1b)에서 수행된 작업의 단순성, 문장 종결 형태소, 마침표 및 문장 연결기의 삽입에도 불구하고 구문적으로 복잡한 두 문장에 비해 새로 생성된 덜 복잡한 두 문장을 처리하는 Google 번역이 크게 향상되었습니다.
+이것은 문헌에서 수행된 연구에서 기대하는 것과 일치합니다.
+덜 복잡하고 짧은 문장은 복잡하고 긴 문장보다 SMT 시스템에서 더 효과적으로 처리됩니다.
+
+There are a few decisions made during the implementation of our complexity reduction system that should be addressed, first among them being tense matching between the reduced sentences. Initially, it was our plan to match tenses between the sentences generated from clauses,
+복잡성 감소 시스템을 구현하는 동안 해결해야 할 몇 가지 결정 사항이 있습니다.
+그 중 첫 번째는 축소된 문장 간의 시제 일치입니다.
+처음에는 절에서 생성된 문장 사이에 시제를 맞추는 것이 우리의 계획이었습니다.
+
+for example, instead of generating the simplified sentences in (1b), we would generate the following:
+예를 들어 (1b)에서 단순화된 문장을 생성하는 대신 다음을 생성합니다.
+
+개스킷을 교체했습니다. 그리고 팬벨트가 낡아서 새로운 것으로 교체했습니다, based on the fact that the sentence as a whole is in the past tense.
+개스킷을 교체했습니다. 그리고 팬벨트가 낡아서 새로운 것으로 교체했습니다는 그 문장 전체가 과거형이라는 사실에 근거하였다.
+
+However, after attempting translation on several such sentences it was found that maintaining the tense the clauses themselves bore generated translations of greater quality. Additionally, not doing so often resulted in over-fitting and forced a meaning on the Korean sentence that was not intended by the original sentence.
+그러나 이러한 여러 문장에 대해 번역을 시도한 후에 절 자체가 시제를 유지하는 것이 더 높은 품질의 번역을 생성한다는 것을 발견했습니다.
+또한 그렇게 하지 않으면 과적합이 발생하여 원문에서 의도하지 않은 한국어 문장의 의미를 강제하는 경우가 많았습니다.
+
+Next, one could argue that the insertion of 그리고, kurigo (and then), increases the complexity of the second clause sentence, therefore, negating our efforts and producing one sentence with a complexity of one followed by a second with a complexity of two. This is due to the fact that, syntactically, one could consider 그리고 as a sentence internal clause connector of the form 그리, kuri (that way), + 고, go (and).
+다음으로, 그리고 kurigo (그리고 then)를 삽입하면 두 번째 절 문장의 복잡성이 증가하므로 우리의 노력을 무효화하고 복잡성이 1인 문장과 복잡성이 2인 두 번째 문장을 생성한다고 주장할 수 있습니다.
+이는 문법적으로 그리고를 문장 내부절 연결자로 간주할 수 있다는 사실 때문입니다.
+
+However, consider the way an MT system sees 그리고 compared to 고. The context of 고 is a fluid environment, ever shifting between verbs, adjectives, and nouns, and such a system can only determine the meaning of the morpheme 고 based on frequency of occurrence. Yet, the form and environment it appears in is inconsistent, as it is a productive morpheme. Additionally, the system must then attempt to determine which word 고 best corresponds to in English, even though 고 is not limited to only the translation of and in English. 고 is a part of many grammatical structures in Korean, not only conjunctive 고. For example, The morpheme also expresses desire, ~고 싶다, or appears in continuous tense, ~고 있다, etc.
+그러나 고와 비교하여 MT 시스템이 보는 방식을 고려하십시오.
+고의 문맥은 동사, 형용사, 명사 사이를 끊임없이 이동하는 유동적인 환경이며 이러한 시스템은 발생 빈도에 따라 형태소 고의 의미를 결정할 수 있습니다.
+그러나 그것이 나타나는 형태와 환경은 생산적인 형태소이기 때문에 일관성이 없다.
+또한 시스템은 고가 및 영어로의 번역에만 국한되지 않더라도 영어에서 고가 가장 잘 대응하는 단어를 결정하려고 시도해야 합니다.
+고는 접속사 고뿐만 아니라 한국어의 많은 문법 구조의 일부입니다.
+예를 들어, 형태소는 욕망, ~고 싶다를 표현하기도 하고, 진행형으로 나타나거나 ~고 있다 등이다.
+
+Given these complications, it is little wonder that even a structure as simple and common as 고 poses problems for NLP tasks. On the other hand, consider 그리고, a nonproductive grouping of morphemes with only one form that is nearly always translated as and then or a close equivalent. Therefore, from a syntactic perspective, the insertion of 그리고 may be suspect, but from a computational perspective, it clearly improves translation quality by acting as a disambiguation tool. On top of that, in the Samsung Corpus (SC), 그리고 is represented as 그리고/MAG (bearing the MAG POS tag, being a magnifying phrase) and 고 is represented as 고/EC. That being the case, a supervised NLP system, such as the Moses SMT system used in the present research, would not even consider the two words/morphemes to be related because they bear completely different POS tags.
+이러한 복잡성을 감안할 때 고처럼 단순하고 일반적인 구조라도 NLP 작업에 문제를 제기하는 것은 놀라운 일이 아닙니다.
+다른 한편으로, 거의 항상 and then 또는 거의 동등한 것으로 번역되는 하나의 형태만을 갖는 비생산적인 형태소의 그룹인 그리고를 고려하십시오.
+따라서 통사론적 관점에서 and의 삽입이 의심될 수 있지만, 계산적 관점에서 명확화 도구 역할을 하여 번역 품질을 향상시킵니다.
+여기에 삼성코퍼스(SC)에서 그리고는 그리고/MAG(MAG POS 태그 부착, 돋보기)로, 고는 고/EC로 표기한다.
+이 경우 현재 연구에 사용된 Moses SMT 시스템과 같은 지도 NLP 시스템은 완전히 다른 POS 태그를 포함하기 때문에 두 단어/형태소가 관련이 있는 것으로 간주조차 하지 않습니다.
+
+Finally, just as important as a simplification system knowing which structures to simplify, so too must it know when to avoid simplification. As was mentioned above, 고 is an extremely productive morpheme in Korean, appearing in many Korean grammatical structures that express conjunction, desire, continuous tense, etc. However, the simplification system proposed by the present research views it as inappropriate and detrimental to simplify anything beyond conjunctive 고. Therefore, not only for 고, but for every structure handled by this system, exception lists were constructed to determine in which contexts clause reduction should be performed and which contexts it should not. This was achieved by viewing the sentence in question a linear string, finding the morpheme(s) in question, in this case conjunctive 고, and examining the contexts to the left and right of the morpheme as it appears in the string for exceptions. This process is summarized in the pseudocode in Algorithm 1 below.
+마지막으로, 어떤 구조를 단순화해야 하는지 아는 단순화 시스템만큼 중요하므로 단순화를 피해야 할 때를 알아야 합니다.
+고는 위에서 언급한 바와 같이 접속사, 욕망, 진행형 등을 표현하는 많은 한국어 문법 구조에 나타나며, 한국어에서 매우 생산적인 형태소이다.
+그러나 본 연구에서 제안하는 단순화 체계는 모든 것을 단순화하는 데 부적절하고 해롭다고 본다.
+접속사 고를 넘어서. 따라서 고뿐만 아니라 이 시스템에서 처리하는 모든 구조에 대해 예외 목록을 구성하여 어떤 컨텍스트에서 절 축소를 수행하고 어떤 컨텍스트에서 수행하지 않아야 하는지를 결정했습니다.
+이것은 문제의 문장을 선형 문자열로 보고, 문제의 형태소(이 경우 접속 고)를 찾고, 예외에 대해 문자열에 나타나는 형태소의 왼쪽과 오른쪽 컨텍스트를 조사함으로써 달성되었습니다.
+이 과정은 아래 알고리즘 1의 의사코드에 요약되어 있습니다.
+
+![Simplification Exception Check.png](img/Simplification Exception Check.png)
+
+for all 단어 in 단순화할 문장 do
+    if 단어 contains 복잡성 감소의 사이트 역할을 하는 결합 then
+        if 복잡성 감소의 사이트 역할을 하는 결합 starts with 예외를 형성하는 형태소 앞의 구조 목록 or
+        if 복잡성 감소의 사이트 역할을 하는 결합 ends with 예외를 형성하는 형태소 뒤의 구조 나열
+            break
+        else
+            continue
+    end if
+end for
+
+Though the complexity reduction operation description above is not an exhaustive list of all conjoining structures handled by this system, the vast majority of them operate in a similar manner, following a similar logic by which we avoid the simplification of exceptions. Therefore, for space considerations, examples of simplification via positive coordinating structures will not follow this section, however, a list of structures considered to be coordination will be discussed in section 4.4.
+위의 복잡성 감소 작업 설명이 이 시스템에서 처리하는 모든 결합 구조의 완전한 목록은 아니지만 대부분은 예외의 단순화를 피하는 유사한 논리에 따라 유사한 방식으로 작동합니다.
+따라서 공간 고려를 위해 긍정적인 조정 구조를 통한 단순화의 예는 이 섹션을 따르지 않지만 조정으로 간주되는 구조 목록은 섹션 4.4에서 논의됩니다.
 
 
 
 
+#### 4-1-2. Contrastive Coordination Simplification
+대조적 조정 단순화
+
+Contrastive coordination occurs when two or more clauses are somehow in conflict with each other, and this is realized in English typically in the form of but. The proposed complexity reduction system handles contrastive coordination in essentially the same way as the positive coordination example was reduced; the only change being the insertion of a different sentence connecting unit.
+대조적 조정은 둘 이상의 절이 어떻게든 서로 충돌할 때 발생하며, 이는 일반적으로 but의 형태로 영어에서 실현됩니다.
+제안된 복잡도 감소 시스템은 긍정적 조정 예가 감소된 것과 본질적으로 동일한 방식으로 대조 조정을 처리합니다.
+유일한 변경 사항은 다른 문장 연결 단위의 삽입입니다.
+
+Please see the example in (2) below:
+
+(2) a. Clause1 N/A/V-은데 Clause2.
+       * Original: 2개월 머물 것인데 짐 가방이 왜 그렇게 작습니까?
+       * Translation: (We're) staying for two month, but why is (your) bag so small?
+       * Google Translate: 2 months geotinde luggage Why did I stay so small?
+
+    b. Sentence1 N/A/V-다. 그런데 Sentence2.
+       * Simplified: 2개월 머물것입니다. 그런데 가방이 왜 그렇게 작습니까?
+       * Translation: (We're) staying for 2 months. But why is (your) bag so small?
+       * Google Translate: It will stay for 2 months. But luggage is so small, why?
+
+The only difference between how the proposed system reduces sentence complexity for positive and contrastive coordination is the sentence connector inserted, which is determined based on the clause conjoining structure in question. As we can see in the above example, just as we saw with positive coordination in 4.1.1, even the simple operation performed here greatly increases Google translation quality between (2a) and (2b).
+제안된 시스템이 긍정과 대조 조정을 위해 문장 복잡성을 줄이는 방법의 유일한 차이점은 해당 절 연결 구조를 기반으로 결정되는 삽입된 문장 연결자입니다.
+위의 예에서 볼 수 있듯이 4.1.1에서 긍정적인 조정으로 보았듯이 여기에서 수행하는 간단한 작업만으로도 (2a)와 (2b) 사이의 Google 번역 품질이 크게 향상됩니다.
+
+Additionally, as was the case with conjunctive 고, Korean homophony did not pose an issue here, because the majority of conjunctive structures targeted by our simplification system bear the ~/EC POS tag, while homophonous structures bear completely different tags. For example, consider 는데/EC vs. 는데/NNB. The former can be translated as but in English, and is therefore a target for conjunctive complexity reduction operations, while the latter is often understood as English while, and while it is a potential site for clause reduction, the means by which it would be reduced are completely different. However, as our system disambiguates based on POS tags, it does not pose an issue for us.
+또한 접속사 고의 경우와 마찬가지로 한국어 동음이의어는 여기서 문제가 되지 않았습니다.
+우리의 단순화 시스템이 대상으로 하는 대부분의 접속 구조가 ~/EC POS 태그를 포함하는 반면 동음이의 구조는 완전히 다른 태그를 포함하기 때문입니다.
+예를 들어, 는데/EC vs 는데/NNB를 고려하십시오.
+전자는 as로 번역될 수 있지만 영어로 되어 있으므로 결합 복잡도 감소 연산의 대상이 되는 반면 후자는 종종 영어로 이해되는 반면 절 축소의 잠재적인 사이트인 반면, 완전히 다릅니다.
+그러나 우리 시스템은 POS 태그를 기반으로 명확화하므로 문제가 되지 않습니다.
+
+A list of all contrastive conjunctive structures processed by the proposed system will be introduced in section 4.4.
+제안된 시스템에 의해 처리되는 모든 대조적 결합 구조의 목록은 섹션 4.4에서 소개될 것입니다.
 
 
 
 
+### 4-1-3. Indirect Sentence Reduction
+간접 문장 줄이기
+
+Another sentence type the proposed system attempts to reduce are sentences that contain indirect speech or thoughts conveyed via the 다고/EC structure in Korean.
+제안하는 시스템이 한국어에서 다고/EC 구조를 통해 전달되는 간접 발화나 생각을 포함하는 문장을 줄이기 위해 시도한 또 다른 문장 유형입니다.
+
+Please consider (3) below.
+
+(3) a. TOPIC는 Clause1 N/A/V-다고 Clause2.
+        * Original: 과학자들은 그 열대 우림에 아직 발전되지 않은 많은 종들이 있다고 믿고 있다.
+        * Translation: Scientists believe there many species that have not yet developed in that tropical rainforest.
+        * Naver Translate: Scientists have not yet developed in the rainforest believe that there are many species.
+
+    b. Sentence1 N/A/V-다. TOPIC는 그렇게 Sentence2.
+        * Simplified: 그 열대 우림에 아직 발전되지 않은 많은 종들이 있다. 과학자들은 그렇게 믿고 있다.
+        * Translation: There are many species that have not yet developed in that tropical rainforest. That's what scientists believe.
+        * Naver Translate: There are a lot of species not yet developed in the rainforest. Scientists believe so.
+
+While similar to the previous reduction strategies introduced so far, indirect sentence simplification varies slightly as we assume the leftmost topic bearing the 은/는/JX morpheme acts the subject of the matrix clause, while subjects or topics, right of the leftmost topic, act as the subject of the embedded clause. Please consider the visualization below:
+지금까지 소개된 이전 축소 전략과 유사하지만 은/는/JX 형태소를 포함하는 가장 왼쪽의 주제가 행렬 절의 주어 역할을 하고 가장 왼쪽 주제의 오른쪽인 주제 또는 주제가 역할을 한다고 가정하기 때문에 간접 문장 단순화는 약간 다릅니다.
+포함된 조항의 주제로.
+
+Please consider the visualization below:
+
+![Indirect Sentence Reduction.png](img/Indirect Sentence Reduction.png)
+
+By assuming this pairing, we therefore copy and track the leftmost topic before splitting the sentence and inserting a period and 그렇 게, kurutke (in that way), to establish cohesive logic between the generated sentences. Due to the linear nature of this Korean grammar pattern, where the matrix clause is the rightmost clause, we then are able to simply insert the leftmost topic into the rightmost newly generated sentence, and then delete it from its original position.
+따라서 이 쌍을 가정하여 문장을 분할하고 마침표를 삽입하기 전에 가장 왼쪽의 주제를 복사하고 추적하여 생성된 문장 사이에 응집력 있는 논리를 설정합니다.
+행렬 절이 맨 오른쪽 절인 이 한국어 문법 패턴의 선형 특성으로 인해 새로 생성된 가장 오른쪽 문장에 맨 왼쪽 주제를 간단히 삽입한 다음 원래 위치에서 삭제할 수 있습니다.
+
+While slightly more complicated and syntactically motivated than the previous complexity reductions, this relatively simple operation generates a much better translation using Naver Translate, a cutting-edge NMT system, as can be seen in (3b). A full list of the indirect structures covered by this reduction system will be introduced section 4.4.
+이전의 복잡성 감소보다 약간 더 복잡하고 구문론적 동기가 부여되었지만, 이 비교적 간단한 작업은 (3b)에서 볼 수 있듯이 최첨단 NMT 시스템인 네이버 번역을 사용하여 훨씬 더 나은 번역을 생성합니다.
+이 감소 시스템이 적용되는 간접 구조의 전체 목록은 섹션 4.4에서 소개됩니다.
 
 
 
+
+#### 4-1-4. Gerund Reduction
+동명사 감소
+
+Another syntactically complex structure reduced in similar way to the indirect speech structure would be that of Korean gerunds; specifically gerunds of the form verb/adjective~기 acting as the topic, subject, or object of the sentence.
+간접적인 화법 구조와 유사한 방식으로 축소된 또 다른 구문적으로 복잡한 구조는 한국어 동명사의 구조일 것입니다.
+구체적으로 동사/형용사~기 형태의 동명사는 문장의 주제, 주제 또는 목적어 역할을 합니다.
+
+Please consider the example in (4) below.
+
+(4) a. TOPIC는 Clause1 A/V-기를 Clause2.
+        * Original: 부모님은 내가 늦게 까지 자지 않고 있기를 원하지 않으셨다.
+        * Translation: My parents did not want me staying up late.
+        * Google Translate: My parents did not want to be without me stay up late.
+
+    b. Sentence1 N/A/V-다. TOPIC는 그것을 Sentence2.
+        * Simplified: 내가 늦게까지 자지 않고 있었다. 부모님은 그것을 원하지 않으셨다.
+        * Translation: I did not sleep until late. My parents did not want it.
+        * Google Translate: I do not sleep late. My parents did not want it.
+
+The example in (4) proceeds with a logic very similar to the example in (3), where the leftmost topic is assumed to be the subject of the matrix clause and is therefore copied, inserted into the rightmost sentence after its generation, and then deleted from its original position. When the gerund phrase is the topic or subject of the sentence, such topic reorientation would be unnecessary. Additionally, as this is an example of the gerund functioning as the object of the sentence, the pronoun 그것, kugeut (that), is inserted to function as the object of the rightmost sentence after the deletion of the gerund phrase. Though the logic is similar, different pronouns are inserted when processing a gerund phrase functioning as the subject or topic of the sentence.
+(4)의 예는 (3)의 예와 매우 유사한 논리로 진행됩니다.
+여기서 가장 왼쪽의 주제는 행렬 절의 주제로 가정되고 따라서 생성된 후 가장 오른쪽 문장에 복사되고 삽입된 다음 원래 위치에서 삭제되었습니다.
+동명사가 문장의 주제나 주제인 경우에는 이러한 주제의 방향 전환이 필요하지 않습니다.
+또한 동명사가 문장의 목적어 역할을 하는 예이므로 동명사구 삭제 후 맨 오른쪽 문장의 목적어로 쓰이도록 대명사 '그'를 삽입한다.
+논리는 비슷하지만 문장의 주어나 주제 역할을 하는 동명사구를 처리할 때 다른 대명사가 삽입됩니다.
+
+As a comparison between (4a) and (4b) shows, sentence complexity reduction through the creation of independent sentences greatly increases Google translation quality. This is due to the reduced sentence complexity each sentence individually bears, making for much easier processing by the SMT Google Translation system. Additionally, we have substituted a productive grammar structure, with many different possible forms (V/A~기), for a common non-productive pronoun with only one form (그것). In this way we have maintained the meaning of the original sentence through logical cohesion, reduced sentence complexity, and generated better SMT output.
+(4a)와 (4b)를 비교하면 알 수 있듯이 독립적인 문장 생성을 통한 문장 복잡도 감소는 Google 번역 품질을 크게 향상시킵니다.
+이는 각 문장이 개별적으로 부담하는 문장 복잡성이 감소하여 SMT Google 번역 시스템에서 훨씬 쉽게 처리할 수 있기 때문입니다.
+또한, 우리는 생산적인 문법 구조를 다양한 가능한 형태(V/A~기)로 대체했으며, 일반적인 비생산적인 대명사를 단 하나의 형태(I)로 대체했습니다.
+이러한 방식으로 우리는 논리적 응집력을 통해 원래 문장의 의미를 유지하고 문장 복잡성을 줄였으며 더 나은 SMT 출력을 생성했습니다.
+
+
+
+
+### 4-1-5. Cause and Effect Reduction
+원인 및 결과 감소
+
+Korean is well known for possessing an uncommonly large number of subordinated structures that express a cause and effect relationship between clauses. All structures bear their own nuanced meaning, however, in English, they are often translated as because. Due to this potential many-to-one mapping when translating between languages, the current research proposes a generalized approach for the handling of this sentence type. Given that the nuanced meaning these structures bear will likely be lost in translation anyway, we propose processing these nuance structures in exactly the same way, regardless of their form.
+한국어는 절 사이의 인과 관계를 표현하는 종속 구조가 비정상적으로 많은 것으로 잘 알려져 있습니다.
+모든 구조는 고유한 뉘앙스의 의미를 가지고 있지만, 영어에서는 종종 원인으로 번역됩니다.
+언어 간 번역 시 잠재적인 다대일 매핑으로 인해 현재 연구에서는 이 문장 유형을 처리하기 위한 일반화된 접근 방식을 제안합니다.
+이러한 구조가 갖는 미묘한 의미가 어쨌든 번역에서 손실될 가능성이 있다는 점을 감안할 때 형식에 관계없이 이러한 뉘앙스 구조를 정확히 동일한 방식으로 처리할 것을 제안합니다.
+
+Please see the example in (5) below.
+
+(5) a. Clause1 N/V/A-니(까), 해서, 때문/덕분, 인하여(etc) Clause2.
+        * Original: 영어가 서툴러 영어로 설명할 수 없습니다.
+        * Translation: Because (my) English is clumsy, (I) can't explain in English.
+        * Google Translate: English can not be described as clumsy English.
+
+    b. Clause2 → Sentence1. 왜냐하면 Clause1 → Sentence2때문이다.
+        * Simplified: 영어로 설명할 수 없습니다. 왜냐하면 영어가 서투르기 때문입니다.
+        * Translation: (I) cannot explain in English. This is because (my) English is clumsy.
+        * Google Translate: I can not explain in English. This is because English is awkward.
+
+The method by which the current research simplifies cause and effect sentence constructions in Korean is slightly more complicated than our previous simplification proposals. After identifying the structure in question, we split the sentence at the structure boundary with a period, delete the structure (in this case 어/아(서)), and insert 기 때문이다, gi ddaemunida (because of), in the original structure's position. We then perform a sentence reordering, where the clause to the left of the simplification site (now a sentence) and the clause to right of the site (also now a sentence) change places. The final step is the insertion of 왜냐하면, waenyahamyun (because of), which happens at the beginning of the newly formed sentence containing 기 때문이다. This serves as a means of generating more natural Korean output and as a disambiguating sentence connector to establish a logical flow between the sentences.
+현재 연구가 한국어의 인과관계 문장 구성을 단순화하는 방법은 이전의 단순화 제안보다 약간 더 복잡합니다.
+해당 구조를 파악한 후, 구조 경계에서 문장을 마침표로 구분하여 구조를 삭제하고(여기서는 어/아(서)), 원문에 기생이다, gi ddaemunida(~때문에)를 삽입한다. 구조의 위치.
+그런 다음 단순화 사이트(지금은 문장)의 왼쪽에 있는 절과 사이트(지금도 문장)의 오른쪽에 있는 절이 위치를 바꾸는 문장 재정렬을 수행합니다.
+마지막 단계는 '때문에'를 삽입하는 것으로, 새로 형성된 기이를 포함하는 문장의 시작 부분에 발생한다.
+이는 보다 자연스러운 한국어 출력을 생성하는 수단이자 문장 간의 논리적 흐름을 설정하기 위한 명확한 문장 연결기 역할을 합니다.
+
+This process is summarized in the pseudocode in Algorithm 2 below.
+
+![Cause and Effect Reduction.png](Cause and Effect Reduction.png)
+
+sent : 단순화되는 문장(들)
+morph : 단순화의 자리 역할을 하는 형태소
+morph left : 단순화 사이트의 왼쪽에 있는 절/문장
+morph right: 단순화 사이트의 왼쪽에 있는 절/문장
+temp : 자리 표시자 문자열
+
+for all words in sent do
+    if word contains morph
+        morph → "기 때문이다."
+        morph left → temp
+        morph right → morph left
+        temp → morph right
+        insert "왜냐하면" at temp-1
+        return morph left + temp
+        temp → null
+    end if
+end for
+
+Though slightly more complicated than our initial simplification proposals, the method by which the proposed clause reduction system simplifies sentences is still relatively straight forward. Additionally, it suggests a generalized approach for processing structures that bear nuanced meaning in the source language, but lose this nuance when translated into the target language. Generalizing structures to a more common form or simplification has been a common thread throughout this research and will be discussed in greater detail in section 4.3. On top of this, as can be clearly seen in (5a) and (5b), translation quality is greatly improved when utilizing the proposed sentence complexity reduction approach. A full list of structures processed in this way will be introduced in section 4.4.
+초기 단순화 제안보다 약간 더 복잡하지만 제안된 절 축소 시스템이 문장을 단순화하는 방법은 여전히 비교적 간단합니다.
+또한, 소스 언어에서 미묘한 의미를 지니지만 대상 언어로 번역될 때 이러한 뉘앙스를 잃는 구조를 처리하기 위한 일반화된 접근 방식을 제안합니다.
+구조를 보다 일반적인 형태 또는 단순화로 일반화하는 것은 이 연구 전반에 걸쳐 공통된 스레드였으며 섹션 4.3에서 더 자세히 논의될 것입니다.
+또한, (5a)와 (5b)에서 명확하게 볼 수 있듯이 제안된 문장 복잡도 감소 접근 방식을 활용하면 번역 품질이 크게 향상됩니다.
+이러한 방식으로 처리된 구조의 전체 목록은 섹션 4.4에서 소개됩니다.
+
+Due to space constraints, additional sentence complexity reduction rules utilized in this research will not be discussed any further, however, the most complicated examples have already been introduced and the remaining simplification types follow a similar logic.
+본 연구에서 활용하는 추가적인 문장 복잡도 감소 규칙은 지면의 제약으로 더 이상 다루지 않겠지만, 가장 복잡한 예는 이미 소개되었으며 나머지 단순화 유형은 유사한 논리를 따릅니다.
+
+
+
+
+### 4-2. Factorial Complexity Reduction
+요인 복잡도 감소
+
+As was noted in Chapter 2, sentence complexity can pose a substantial issue for syntactic simplification systems when they are first introduced into a language. For example, when Collados introduced his Spanish syntactic simplification system, he was limited to only the simplification of Spanish sentences bearing two clauses, that is, a sentences with a complexity of two (2013). In other words, Collados only performed one simplification per sentence. Considering the pro-drop nature of Korean, where entire clauses or even sentences may be nothing but bare verb phrases with no subjects, objects, or topics, the current research views this hurdle extremely limiting.
+2장에서 언급했듯이 문장 복잡성은 언어에 처음 도입될 때 구문 단순화 시스템에 상당한 문제를 제기할 수 있습니다.
+예를 들어, Collados가 스페인어 구문 단순화 시스템을 도입했을 때 두 개의 절, 즉 복잡도가 2인 문장을 포함하는 스페인어 문장의 단순화에만 국한되었습니다(2013).
+즉, Collados는 문장당 하나의 단순화만 수행했습니다.
+전체 절이나 문장이 주어도, 목적어도, 주제도 없는 단순한 동사구에 불과한 한국어의 친드랍적 특성을 고려할 때, 현재의 연구는 이 장애물을 극히 제한적으로 보고 있다.
+
+Additionally, when attempting to simplify Korean sentences with a complexity greater than two, there is no basis on which to determine which simplification combination or order would generate the most natural Korean or the best translation. It is possible to force such a decision, however, it is our belief that such a determination should be left up to Korean native speakers evaluating simplified Korean output, and English native speakers evaluating MT output. Therefore, in the present research we propose a method to overcome this initial hurdle and provide foundational insight into what simplifications and simplification combinations generate the most natural Korean and/or the best translations, which we term factorial complexity reduction.
+또한 복잡도가 2보다 큰 한국어 문장을 단순화하려고 할 때 가장 자연스러운 한국어 또는 최상의 번역을 생성하는 단순화 조합 또는 순서를 결정할 근거가 없습니다.
+이러한 결정을 강제할 수도 있지만, 그러한 결정은 한국어 간체 출력을 평가하는 한국어 원어민과 MT 출력을 평가하는 영어 원어민에게 맡겨야 한다고 생각합니다.
+따라서 본 연구에서 우리는 이 초기 장애물을 극복하고 어떤 단순화 및 단순화 조합이 가장 자연스러운 한국어 및/또는 최고의 번역을 생성하는지에 대한 기초적인 통찰력을 제공하는 방법을 제안합니다.
+
+By viewing complex sentences as a string of clause boundaries and making note of these clause boundaries, we are able to view the sentence as a series of clause reduction operations that, when combined together one-by-one, become a cohesive unit of simplified sentences. In other words, we view each simplification possible in a sentence as a factor that, when combined together with other possible simplifications, generate the final, completely simplified unit, hence the factorial nature. We then are able to generate all possible simplifications and all possible simplification permutations in a given syntactically complex sentence.
+복잡한 문장을 일련의 절 경계로 보고 이러한 절 경계를 기록함으로써 문장을 하나씩 결합할 때 단순화된 문장의 응집력 있는 단위가 되는 일련의 절 축소 작업으로 볼 수 있습니다.
+다시 말해서, 우리는 문장에서 가능한 각 단순화를 다른 가능한 단순화와 결합할 때 최종적이고 완전히 단순화된 단위를 생성하는 요인으로 간주하므로 계승적 특성이 나타납니다.
+그런 다음 주어진 구문으로 복잡한 문장에서 가능한 모든 단순화와 가능한 모든 단순화 순열을 생성할 수 있습니다.
+
+Please see the example in (6) below.
+
+(6) a. 아 죄송하지만 예약을 재확인하지 않으셨기 때문에 성함이 탑승자 명단에서 빠져 있습니다.
+        * Translation: Ah, I'm sorry, but because you did not reconfirm your reservation, your name is not on the passenger list.
+
+    b. 아 죄송합니다. 하지만 예약을 재확인하지 않으셨기 때문에 성함이 탑승자 명단에서 빠져 있습니다.
+        * Translation: Ah, I'm sorry. But because you did not reconfirm your reservation, your name is not on the passenger list.
+
+    c. 아 죄송하지만 성함이 탑승자 명단에서 빠져 있습니다. 왜냐하면 예약을 재확인하지 않으셨기 때문입니다.
+        * Translation: Ah, I'm sorry, but your name is not on the passenger list. This is because you did not reconfirm your reservation.
+
+    d. 아 죄송합니다. 하지만 성함이 탑승자 명단에서 빠져 있습니다. 왜냐하면 예약을 재확인하지 않으셨기 때문입니다.
+        * Translation: Ah, I'm sorry. But your name is not on the passenger list. This is because you did not reconfirm your reservation.
+
+(6a) above is the original sentence before simplification. By scanning the sentence from left to right, we are able to note clause boundaries, determine which simplifications are possible, and then begin clause reduction operations from left to right as they appear in the sentence. (6b) shows the first simplification our system would perform, which is a contrastive clause coordination similar to the example described in section 4.1.2. Our system outputs the simplified sentences, updates the list of factorial simplifications, and continues. The next simplification possible can be seen in (6c) and is of the cause and effect variety, which is described in section 4.1.5. By noting the clause boundaries and only reordering the relevant clauses, the system successfully performs sentence complexity reduction, updates the list of factorial simplifications, outputs the reduced sentences, and continues on. We have now exhausted the number of possible simplifications available in our original sentence, so the only option left is to output the combination of both complexity reduction operations, which can be seen in (6d). For the sake of space and simplicity, we have described an example with a sentence complexity of three, therefore, outputting the two possible syntactic simplifications and one simplification combination. However, there is no limit to the number of complexity reduction operations and permutations our system could perform, so long as the sentence in question were sufficiently complex.
+위의 (6a)는 간략화 전의 원문이다.
+문장을 왼쪽에서 오른쪽으로 스캔하여 절 경계를 확인하고 어떤 단순화가 가능한지 결정한 다음 문장에 나타날 때 왼쪽에서 오른쪽으로 절 축소 작업을 시작할 수 있습니다.
+(6b)는 우리 시스템이 수행할 첫 번째 단순화를 보여줍니다.
+이는 섹션 4.1.2에 설명된 예와 유사한 대조절 조정입니다.
+우리 시스템은 단순화된 문장을 출력하고 계승 단순화 목록을 업데이트한 다음 계속합니다.
+가능한 다음 단순화는 (6c)에서 볼 수 있으며 4.1.5절에 설명된 다양한 원인과 결과입니다.
+절 경계를 확인하고 관련 절만 재정렬함으로써 시스템은 문장 복잡성 감소를 성공적으로 수행하고 계승 단순화 목록을 업데이트하고 축소된 문장을 출력하고 계속합니다.
+우리는 이제 원래 문장에서 사용할 수 있는 가능한 단순화의 수를 소진했으므로 남은 유일한 옵션은 (6d)에서 볼 수 있는 두 복잡성 감소 작업의 조합을 출력하는 것입니다.
+공간과 단순함을 위해 문장 복잡도가 3인 예를 설명했으므로 두 가지 가능한 구문 단순화와 하나의 단순화 조합을 출력합니다.
+그러나 문제의 문장이 충분히 복잡하다면 우리 시스템이 수행할 수 있는 복잡성 감소 연산 및 순열의 수에는 제한이 없습니다.
+
+
+
+
+### 4-3. Phrase Grouping and Generalization
+구문 그룹화 및 일반화
+
+Throughout section 4.1 above, during the descriptions of various rules, we made mention of grouping certain nuance structures together and simplifying them in a manner to motivate disambiguation. For example, in 4.1.5 we discuss the insertion of 왜냐하면 and 때문이다, which, when translated into English, both roughly equate to because of, into the clause bearing the cause of the preceding clause which bears the effect. Following this logic, this research suggests the grouping of infrequent nuance structures together with more frequent structures that carry essentially the same meaning, especially when losing their nuanced meaning during translation into English.
+위의 섹션 4.1 전체에서 다양한 규칙을 설명하는 동안 특정 뉘앙스 구조를 그룹화하고 명확성을 유도하는 방식으로 단순화하는 것에 대해 언급했습니다.
+예를 들어, 4.1.5절에서 우리는 영어로 번역할 때 왜냐하면과 때문이다를 삽입하는 것을 논의하는데, 이는 영어로 번역될 때 둘 다 대략 to 때문에와 동일하다.
+이러한 논리에 따라, 이 연구는 특히 영어로 번역하는 동안 뉘앙스 의미를 잃을 때 본질적으로 동일한 의미를 전달하는 보다 빈번한 구조와 함께 드물게 뉘앙스 구조를 그룹화할 것을 제안합니다.
+
+For example, consider the case of 더라도/EC, duhrado, and 도/EC, do. The former occurs 78 times in the SC while the latter occurs 4,538 times, yet when translated into English, both structures are typically understood as even though or even if. When we perform sentence splitting complexity reduction operations on these structures, instead of viewing them as unique, this research suggests grouping such clause conjunctions together, generalizing, and performing the same generalized simplification on both. Generalizing to a more frequent form, which the MT system in question has seen more often, increases translation quality as a greater frequency of occurrence is beneficial to all statistical machine learning techniques.
+예를 들어, '완전/EC', '두라도', '도/EC'의 경우를 생각해보자.
+전자는 SC에서 78번 발생하고 후자는 4,538번 발생하지만 영어로 번역할 때 두 구조는 일반적으로 even though 또는 even if로 이해됩니다.
+이러한 구조에 대해 문장 분할 복잡성 감소 작업을 수행할 때 고유한 것으로 보는 대신 이러한 절 접속사를 함께 그룹화하고 일반화하고 둘 모두에 대해 동일한 일반화 단순화를 수행하는 것이 좋습니다.
+문제의 MT 시스템이 더 자주 보았던 더 빈번한 형식으로 일반화하면 발생 빈도가 높을수록 모든 통계적 기계 학습 기술에 유리하므로 번역 품질이 향상됩니다.
+
+For example please consider (7) below.
+
+(7) a. Original: 3 개월 이상에 해당하는 양의 약은 아무리 복용용이라 하더라도 반입하실 수 없습니다.
+        * Translation: Even if you say will take it, you cannot bring more than 3 months worth of medicine.
+        * Naver Translate: Embargo of corresponding amount of medicine is however one for take inmore than three months can not.
+
+    b. Simplified: 3 개월 이상에 해당하는 양의 약은 아무리 복용용이라 합니다. 그래도 반입하실 수 없습니다.
+        * Naver translate: Corresponding amount of medicine is no matter how one for taking on more than three months. Can not still carrying them into.
+
+Additionally, when possible, we attempt to substitute frequent, non-productive pronouns or magnifying phrases in place of productive grammar structures that can appear in many different shapes and forms. The reason for this being nonproductive words typically only have one form, and are therefore much easier to find a one-to-one translation in the target language than productive conjunctive structures with forms as various as the number of verbs, nouns, and adjectives in a source language. We believe this phrase grouping and generalization logic is not limited to only Korean, and could have an application in all languages as a tool for compensating for data scarcity during NLP tasks.
+또한 가능하면 다양한 모양과 형태로 나타날 수 있는 생산적인 문법 구조 대신 빈번하고 비생산적인 대명사 또는 확대구로 대체하려고 합니다.
+이것이 비생산적인 단어인 이유는 일반적으로 하나의 형태만을 가지므로 목표 언어에서 동사, 명사 및 형용사의 수만큼 다양한 형태의 생산적 접속 구조보다 일대일 번역을 찾는 것이 훨씬 쉽습니다. 소스 언어.
+우리는 이 구문 그룹화 및 일반화 논리가 한국어에만 국한되지 않고 NLP 작업 중 데이터 부족을 보완하기 위한 도구로 모든 언어로 응용할 수 있다고 믿습니다.
+
+A list of the phrase groupings made during implementation of this sentence complexity reduction system will be introduced in the next section, 4.4.
+이 문장 복잡도 감소 시스템을 구현하는 동안 만들어진 구문 그룹 목록은 다음 섹션인 4.4에서 소개됩니다.
+
+
+
+
+### 4-4. System Coverage
+시스템 적용 범위
+
+This section details the coverage of the proposed Korean sentence complexity reduction system as it applies to the Samsung Corpus (SC). In other words, how many sentences within the corpus could our system apply to and simplify? Technically, as the system was constructed with a filter to sort out sentences with insufficient complexity, that is, sentences bearing only one verb phrase, our system has 100% coverage as it would ignore sentences with insufficient complexity or sentences that are only comprised of expectations. As was mentioned in section 4.1.1, not simplifying inappropriately is just as important as successful simplification. However, disregarding this logic, the following table summarizes the grouping of conjunctive structures our system applies to and the percentage of sentences in the corpus they appear in. As a point of reference, there are a total of 354,972 sentences in the corpus. Structures are divided by parenthesis and commas for ease of viewing.②
+이 섹션에서는 Samsung Corpus(SC)에 적용되는 제안된 한국어 문장 복잡성 감소 시스템의 적용 범위를 자세히 설명합니다.
+즉, 코퍼스 내에서 우리 시스템이 적용하고 단순화할 수 있는 문장은 몇 개입니까?
+기술적으로, 시스템은 복잡성이 충분하지 않은 문장, 즉 하나의 동사구로 구성된 문장을 분류하는 필터로 구성되었으므로 복잡성이 불충분한 문장이나 기대만으로 구성된 문장을 무시하므로 100% 적용 범위를 갖습니다.
+섹션 4.1.1에서 언급했듯이 부적절하게 단순화하지 않는 것이 성공적인 단순화만큼 중요합니다.
+그러나 이러한 논리를 무시하고 다음 표에는 우리 시스템이 적용되는 연결 구조의 그룹화와 그것이 나타나는 문장의 비율이 요약되어 있습니다.
+참고로 말뭉치에는 총 354,972개의 문장이 있습니다.
+구조는 보기 쉽도록 괄호와 쉼표로 구분합니다.②
+
+② As was mentioned in section 4.1.1, when the proposed system checks for simplification exceptions, it looks to the right and left of the simplification site. This is reflected in grouping marked with exception, as the conjunctive structure may have a null to its immediate right or left. This simply means the system need not check to the right or left of the simplification site.
+② 4.1.1절에서 언급한 바와 같이 제안하는 시스템은 단순화 예외사항을 확인할 때 단순화 사이트의 좌우를 본다.
+이것은 결합 구조가 바로 오른쪽이나 왼쪽에 null을 가질 수 있기 때문에 예외로 표시된 그룹화에 반영됩니다.
+이것은 단순히 시스템이 단순화 사이트의 오른쪽이나 왼쪽을 확인할 필요가 없다는 것을 의미합니다.
+
+!(System Coverage-1.png)[img/System Coverage-1.png]
+!(System Coverage-2.png)[img/System Coverage-2.png]
+
+Whether it be the application of a simplification or knowing when a simplification would be inappropriate, the proposed complexity reduction system can successfully review approximately 77% the sentences in the SC. This is achieved by grouping 137 structures into 17 different sets, generalizing, and simplifying based on the rules described in section 4.1. This is in no way an exhaustive list, as there are likely grammar structures not considered by the current study. However, we are confident that the system could be simply updated to incorporate new conjunctions should they become known. For example, a conjunction not considered by his research would be that of N/A/V든지, which roughly expresses an equality between clauses, which in English is often realized as or. Though untested by the current research, we believe such a structure would easily fall within the Or grouping provided above. We leave the discovery of additionally conjunctions to future research.
+단순화의 적용이든 단순화가 부적절할 때를 아는 것이든 제안된 복잡도 감소 시스템은 SC의 약 77% 문장을 성공적으로 검토할 수 있습니다.
+이것은 137개의 구조를 17개의 다른 세트로 그룹화하고 섹션 4.1에 설명된 규칙을 기반으로 일반화 및 단순화함으로써 달성됩니다.
+현재 연구에서 고려하지 않은 문법 구조가 있을 수 있으므로 이것은 완전한 목록이 아닙니다.
+그러나 우리는 새로운 접속사가 알려지면 시스템을 간단히 업데이트하여 새로운 접속사를 통합할 수 있다고 확신합니다.
+예를 들어 그의 연구에서 고려하지 않는 접속사는 N/A/V던 인데, 이는 영어에서 or로 구현되는 경우가 많은데, 이는 절 사이의 동등성을 대략적으로 표현합니다.
+현재 연구에서는 테스트되지 않았지만 이러한 구조는 위에서 제공된 Or 그룹에 쉽게 속할 것이라고 생각합니다.
+추가 접속사에 대한 발견은 향후 연구에 맡깁니다.
+
+
+
+
+### 4-5. System Architecture
+시스템 구조
+
+The proposed Korean sentence complexity reduction system is heavily based on the simplification architecture introduced by Siddharthan (2002). However, a shortcoming of Siddharthan's research is its exclusive focus on European languages, therefore, some of the steps he suggests are inappropriate for Korean simplification, and the Samsung Corpus (SC) in particular.
+제안된 한국어 문장 복잡도 감소 시스템은 Siddharthan(2002)이 도입한 단순화 아키텍처를 기반으로 합니다.
+그러나 Siddharthan의 연구의 단점은 유럽 언어에 대한 독점적인 초점이므로 그가 제안한 단계 중 일부는 한국어 간체, 특히 Samsung Corpus(SC)에 적합하지 않습니다.
+
+Therefore we introduce the following architecture for the proposed system in Figure 4.1:
+따라서 그림 4.1에서 제안하는 시스템에 대해 다음 아키텍처를 소개합니다.
+
+![Korean Sentence Complexity Reduction Architecture(korean).png](img/Korean Sentence Complexity Reduction Architecture(korean).png)
+
+Using this architecture, we take a Korean input sentence and insert it into our system. In the first stage we perform the necessary analysis such as using POS tags to parse the sentence, identify the sentence type (question, statement, etc) determine what simplifications, if any, to perform, and finally make note of which factorial permutations are possible in the sentence, as described in section 4.2. Based on our findings during analysis, the system determines which rules to apply and does so based on the rules described in section 4.1. The newly generated sentences are then brought to the final stage where we establish a cohesive logic by the insertion of sentence connectors, move anaphors, such as topics if necessary, into their appropriate positions.
+이 아키텍처를 사용하여 한국어 입력 문장을 가져와 시스템에 삽입합니다.
+첫 번째 단계에서 우리는 POS 태그를 사용하여 문장을 구문 분석하고, 문장 유형(질문, 진술 등)을 식별하는 것과 같은 필요한 분석을 수행합니다.
+어떤 단순화를 수행할지 결정하고, 마지막으로 어떤 계승 순열이 가능한지 기록합니다. 섹션 4.2에 설명된 대로 문장에서.
+분석 중 발견한 사항을 기반으로 시스템은 적용할 규칙을 결정하고 섹션 4.1에 설명된 규칙에 따라 적용합니다.
+새로 생성된 문장은 문장 연결자를 삽입하여 응집력 있는 논리를 설정하고 필요한 경우 주제와 같은 아나포어를 적절한 위치로 이동하는 최종 단계로 이동합니다.
+
+In the final stage we also match the formality between sentences generated by the proposed system. As was mentioned in Chapter 3, the SC is a corpus of spoken Korean, therefore, all registers of Korean formality and honorifics are present in the corpus. In order to generate Korean sentences that sound as natural as possible, we thought it necessary to maintain the formality of the original Korean sentence in our reduced sentences. This was accomplished by making lists of all possible formality endings in the corpus, noting the original sentence's formality and type, then simply inserting the appropriate ending before the sentence ending punctuation at the simplification site. Though not a necessary step for Korean to English MT, as English has no equivalent formality registers, this, we believe, is an imperative step for any Korean syntactic TS system attempting to produce natural output.
+마지막 단계에서는 제안된 시스템에서 생성된 문장 간의 형식도 일치시킵니다.
+3장에서 언급했듯이 SC는 구어체의 말뭉치이므로 한국어의 격식과 존칭의 모든 레지스터가 말뭉치에 존재한다.
+최대한 자연스럽게 들리는 한국어 문장을 생성하기 위해서는 축약된 문장에서 원래 한국어 문장의 형식을 유지할 필요가 있다고 생각했습니다.
+이것은 말뭉치에서 가능한 모든 형식 어미의 목록을 만들고 원래 문장의 형식과 유형을 확인한 다음 단순화 사이트에서 문장 끝 구두점 앞에 적절한 어미를 삽입하기만 하면 됩니다.
+한국어에서 영어로 MT에 필요한 단계는 아니지만 영어에는 이에 상응하는 형식 레지스터가 없기 때문에 자연스러운 출력을 생성하려는 한국어 구문 TS 시스템의 필수 단계라고 생각합니다.
+
+After the final regeneration stage, the reduced Korean sentences are returned to the initial stage and the process begins anew, in this way simplifying and generating factorial permutations recursively. Should no simplification be possible, the reduced Korean sentences are inserted into an MT system, and then converted into the target language. Though the focus of the current research is Korean to English translation, we believe this system should be able to improve translation output for any MT project where the source language is Korean.
+최종 재생성 단계 이후에는 축약된 한국어 문장을 초기 단계로 되돌리고 프로세스를 새로 시작하여 재귀적으로 계승 순열을 단순화하고 생성합니다.
+단순화가 불가능한 경우 축소된 한국어 문장을 MT 시스템에 삽입한 후 대상 언어로 변환합니다.
+현재 연구의 초점은 한국어에서 영어로의 번역이지만, 우리는 이 시스템이 소스 언어가 한국어인 모든 MT 프로젝트의 번역 출력을 향상시킬 수 있을 것이라고 믿습니다.
 
