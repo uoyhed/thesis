@@ -136,3 +136,117 @@ LSBert는 단순화하기 위해 미리 정의된 임계값보다 높은 p 값�
 
 
 
+## 3-2. Substitute Generation (SG)
+## 3-2. 대체 생성 (SG)
+
+
+
+Given a sentence S and the complex word w, the aim of substitution generation (SG) is to produce the substitute candidates for the complex word w. LSBert produces the substitute candidates for the complex word using pretrained language model Bert. we briefly summarize the Bert model, and then describe how we extend it to do lexical simplification.
+문장 S와 복합어 w가 주어지면 대체 생성(SG)의 목적은 복합어 w에 대한 대체 후보를 생성하는 것입니다. LSBert는 사전 훈련된 언어 모델 Bert를 사용하여 복잡한 단어에 대한 대체 후보를 생성합니다. Bert 모델을 간략하게 요약한 다음 이를 확장하여 어휘 단순화를 수행하는 방법을 설명합니다.
+
+
+
+Bert [11] is a self-supervised method for pretrained a deep transformer encoder, which is optimized by two training objectives: masked language modeling (MLM) and next sentence prediction (NSP). Unlike a traditional language modeling objective of predicting the next word in a sequence given the history, MLM predicts missing tokens in a sequence given its left and right context. Bert accomplishes NSP task by prepending every sentence with a special classification token, [CLS], and by combining sentences with a special separator token, [SEP]. The final hidden state corresponding to the [CLS] token is used as the total sequence representation from which we predict a label for classification tasks, or which may otherwise be overlooked.
+Bert [11]는 MLM(Masked Language Modeling)과 NSP(다음 문장 예측)라는 두 가지 훈련 목표에 의해 최적화된 심층 transformer encoder를 사전 훈련하기 위한 자체 감독 방법입니다. 주어진 기록이 있는 시퀀스에서 다음 단어를 예측하는 기존의 언어 모델링 목표와 달리 MLM은 왼쪽 및 오른쪽 컨텍스트가 주어지면 시퀀스에서 누락된 토큰을 예측합니다. Bert는 모든 문장 앞에 특수 분류 토큰 [CLS]을 추가하고 문장을 특수 구분 토큰 [SEP]으로 결합하여 NSP 작업을 수행합니다. [CLS] 토큰에 해당하는 최종 숨겨진 상태는 분류 작업에 대한 레이블을 예측하거나 간과할 수 있는 전체 시퀀스 표현으로 사용됩니다.
+
+
+
+Due to the fundamental nature of MLM, we mask the complex word w of the sentence S and get the probability distribution of the vocabulary p(ㆍ|S\{w}) corresponding to the masked word w. Therefore, we can try to use MLM for substitute generation.
+MLM의 근본적인 특성으로 인해 문장 S의 복잡한 단어 w를 마스킹하고 마스킹된 단어 w에 해당하는 어휘 p(ㆍ|S\{w})의 확률 분포를 얻습니다. 따라서 우리는 대체 생성을 위해 MLM을 사용하려고 할 수 있습니다.
+
+
+
+For the complex word w in a sentence S, we mask the word w of S using special symbol ”[MASK]” as a new sequence S0. If we directly feed S0 into MLM, the probability of the vocabulary p(·|S`\{ti}) corresponding to the complex word w only considers the context regardless of the influence of the complex word w. Considering that Bert is adept at dealing with sentence pairs due to the NSP task adopted by Bert. We concatenate the original sequence S and S0 as a sentence pair, and feed the sentence pair (S, S0) into the Bert to obtain the probability distribution of the vocabulary p(·|S,S`\{w}) corresponding to the mask word. Thus, the higher probability words in p(·|S,S`\{w}) corresponding to the mask word not only consider the complex word itself, but also fit the context of the complex word.
+문장 S의 복잡한 단어 w에 대해 특수 기호 "[MASK]"를 새 시퀀스 S0으로 사용하여 S의 단어 w를 마스킹합니다. S0를 MLM에 직접 입력하면 복합어 w에 해당하는 어휘 p(·|S`\{ti})의 확률은 복합어 w의 영향에 관계없이 문맥만을 고려합니다. Bert가 채택한 NSP 작업으로 인해 Bert가 문장 쌍을 처리하는 데 능숙하다는 점을 고려하면. 원래 시퀀스 S와 S0를 문장 쌍으로 연결하고 문장 쌍 (S, S0)을 Bert에 공급하여 해당하는 어휘 p(·|S,S`\{w})의 확률 분포를 얻습니다. 마스크 단어. 따라서 마스크 단어에 해당하는 p(·|S,S`\{w})에서 확률이 높은 단어는 복합어 자체를 고려할 뿐만 아니라 복합어의 문맥에도 적합합니다.
+
+
+
+Finally, we select the top 10 words from p(·|S,S`\{w}) as substitution candidates, excluding the morphological derivations of w. In addition, considering that the contextual information of the complex word is used twice, we randomly mask a certain percentage of words in S excluding w for appropriately reducing the impact of contextual information.
+마지막으로 p(·|S,S`\{w})에서 상위 10개 단어를 w의 형태학적 파생물을 제외하고 대체 후보로 선택합니다. 또한 복합어의 문맥정보가 2회 사용되는 것을 고려하여 문맥정보의 영향을 적절하게 줄이기 위해 w를 제외한 S의 특정 비율의 단어를 무작위로 마스킹한다.
+
+
+
+## 그림 3 ##
+
+Fig. 3. Substitution generation of LSBert for the target complex word prediction, or cloze task. The input text is ”the cat perched on the mat” with complex word ”perched”. [MASK], [CLS] and [SEP] are thress special symbols in Bert, where [MASK] is used to mask the word, [CLS] is added in front of each input instance and [SEP] is a special separator token.
+그림 3. target 복합어 예측 또는 클로즈 작업(중간 중간 빈칸이 나 있는 글을 읽고 빈칸에 알맞은 말을 써 넣는 작업)에 대한 LSBert의 대체 생성. 입력 텍스트는 복합어 "perched"가 포함된 "the cat perched on the mat"입니다. [MASK], [CLS] 및 [SEP]는 Bert의 특수 기호이며, 여기서 [MASK]는 단어를 마스킹하는 데 사용되며, [CLS]는 각 입력 인스턴스 앞에 추가되며 [SEP]는 특수 구분 기호 토큰입니다.
+
+
+
+See Figure 3 for an illustration. Suppose that there is a sentence”the cat perched on the mat” and the complex word ”perched”, we get the top three substitute candidates ”sat, seated, hopped”. We can see that the three candidates not only have a strong correlation with the complex word, but also hold the cohesion and coherence properties of the sentence. If we adopt the existing state-of-the-art methods [9] and [6], the top three substitution words are ”atop, overlooking, precariously” and ”put, lighted, lay”, respectively. Very obviously, our method generates better substitute candidates for the complex word.
+그림 3을 참조하십시오. "the cat perched on the mat"라는 문장과 복잡한 단어 "perched"가 있다고 가정하면 상위 3명의 대체 후보인 "sat, seated, hopped"를 얻습니다. 세 후보가 복잡한 단어와 강한 상관관계를 가질 뿐만 아니라 문장의 응집력과 일관성 속성을 가지고 있음을 알 수 있습니다. 기존의 최첨단 방식[9]과 [6]을 채택하면 상위 3개 대체 단어는 각각 'atop, overlooking, precariously'와 'put, lighted, lay'입니다. 매우 분명히, 우리의 방법은 복잡한 단어에 대한 더 나은 대체 후보를 생성합니다.
+
+
+
+## 3-3. Filtering and Substitute Ranking (SR)
+## 3-3. 필터링 그리고 대체 순위 (SR)
+
+Giving substitute candidates C = {c1, c2, …, Cn}, the substitution ranking of the lexical simplification framework is to decide which one of the candidate substitutions that fits the context of complex word is the simplest [22], where n is the number of substitute candidates. First, threshold-based filtering is performed by LSBert, which is used to remove some complex substitutes. Substitutes are removed from consideration if their Zipf values below 3 using Frequency features. Then, LSBert computes various rankings according to their scores for each of the features. After obtaining all rankings for each feature, LSBert scores each candidate by averaging all its rankings. Finally, we choose the candidate with the highest ranking as the best substitute.
+대체 후보 제공 C = {c1, c2, …, Cn},
+어휘 단순화 프레임워크의 치환 순위는 복잡한 단어의 문맥에 맞는 후보 대체 중 어느 것이 가장 간단한지를 결정하는 것입니다[22]. 여기서 n은 대체 후보의 수입니다. 첫째, 임계값 기반 필터링은 LSBert에 의해 수행되며, 이는 일부 복잡한 대체물을 제거하는 데 사용됩니다. 빈도 특징을 사용하여 Zipf 값이 3 미만인 경우 대체 항목이 고려 대상에서 제거됩니다. 그런 다음 LSBert는 각 특징에 대한 점수에 따라 다양한 순위를 계산합니다. 각 특징에 대한 모든 순위를 얻은 후 LSBert는 모든 순위를 평균화하여 각 후보의 점수를 매깁니다. 마지막으로, 우리는 가장 높은 순위를 가진 후보를 최고의 대안으로 선택합니다.
+** Zipf(Zipf's law): 지프의 법칙
+
+
+
+Previous work for this step is based on the following features: word frequency, contextual simplicity and Ngram language modeling, etc. In contrast to previous work, in addition to the word frequency and word similarity commonly used in other LS methods, LSBert considers three additional high-quality features: two features about Bert and one feature about PPDB (A Paraphrase Database for Simplification).
+이 단계의 이전 작업은 단어 빈도, 문맥 단순성 및 N-gram 언어 모델링 등의 기능을 기반으로 합니다. 이전 작업과 달리 다른 LS 방법에서 일반적으로 사용되는 단어 빈도 및 단어 유사성 외에도 LSBert는 세 가지 추가 요소를 고려합니다. 고품질 특징: Bert에 대한 두 가지 기능과 PPDB(A Paraphrase Database for Simplification)에 대한 기능.
+
+
+
+Bert prediction order. On this step of substitute generation, we obtain the probability distribution of the vocabulary corresponding to the mask word. Because LSBert already incorporates the context information on the step of substitution generation, the word order of Bert prediction is a crucial feature which includes the information of both the context and the complex word itself. The higher the probability, the more relevant the candidate for the original sentence.
+버트 예측 순서. 이 대체 생성 단계에서 마스크 단어에 해당하는 어휘의 확률 분포를 얻습니다. LSBert는 이미 대체 생성 단계에서 문맥 정보를 포함하고 있기 때문에 Bert 예측의 어순은 문맥 정보와 복합어 자체의 정보를 모두 포함하는 중요한 특징입니다. 확률이 높을수록 원래 문장의 후보와 관련성이 높아집니다.
+
+
+
+#### Language model feature.
+A substitution candidate should fit into the sequence of words preceding and following the original word. We cannot directly compute the probability of a sentence or sequence of words using Bert like traditional n-gram language models. Let W = w-m, …, w-1, w, w1, …, wm be the context of the original word w. We adopt a new strategy to compute the likelihood of W. We first replace the original word w with the substitution candidate. We then mask one word of W from front to back and feed into Bert to compute the cross-entropy loss of the mask word. Finally, we rank all substitute candidates based on the average loss of W. The lower the loss, the substitute candidate is a good substitution for the original word. We use as context a symmetric window of size five around the complex word.
+#### 언어 모델 특징.
+대체 후보는 원래 단어 앞뒤의 단어 시퀀스에 맞아야 합니다. 전통적인 n-gram 언어 모델처럼 Bert를 사용하여 문장이나 단어 시퀀스의 확률을 직접 계산할 수 없습니다. W = w-m, …, w-1, w, w+1, …, w+m을 원래 단어 w의 문맥이라고 합시다. W의 가능성을 계산하기 위해 새로운 전략을 채택합니다. 먼저 원래 단어 w를 대체 후보로 바꿉니다. 그런 다음 W의 한 단어를 앞에서 뒤로 마스크하고 Bert에 공급하여 마스크 단어의 교차 엔트로피 손실을 계산합니다. 마지막으로 W의 평균 손실을 기반으로 모든 대체 후보의 순위를 지정합니다. 손실이 낮을수록 대체 후보는 원래 단어에 대한 좋은 대체입니다. 복잡한 단어 주위에 크기가 5인 대칭 window를 컨텍스트로 사용합니다.
+
+
+
+#### Semantic similarity.
+The similarity between the complex word and the substitution candidate is widely used as a feature for SR. In general, word embedding models are used to obtain the vector representation and the cosine similarity metric is chosen to compute the similarity. Here, we choose the pretrained fastText model as word embedding modeling. The higher the similarity value, the higher the ranking.
+#### 의미적 유사성.
+복합어와 대체 후보의 유사성은 SR의 특징으로 널리 사용됩니다. 일반적으로 단어 임베딩 모델은 벡터 표현을 얻는 데 사용되며 유사성을 계산하기 위해 코사인 유사성 메트릭이 선택됩니다. 여기에서 사전 훈련된 fastText 모델을 단어 임베딩 모델링으로 선택합니다. 유사도 값이 높을수록 순위가 높아집니다.
+
+
+
+#### Frequency feature.
+Frequency-based candidate ranking strategies are one of the most popular choices by lexical simplification and quite effective. In general, the more frequency a word is used, the most familiar it is to readers. We adopt the Zipf scale created from the SUBTLEX lists [35], because some experiments [22] revealed that word frequencies from this corpus correlate with human judgments on simplicity than many other more widely used corpora, such as Wikipedia. SUBTLEX is composed of over six million sentences extracted from subtitles of assorted movies. The Zipf frequency of a word is the base-10 logarithm of the number of times it appears per billion words.
+#### 빈도 특징.
+빈도 기반 후보 순위 전략은 어휘 단순화에 의해 가장 인기 있는 선택 중 하나이며 매우 효과적입니다. 일반적으로 단어를 더 많이 사용할수록 독자에게 가장 친숙합니다. 우리는 SUBTLEX 목록[35]에서 만든 Zipf 척도를 채택했습니다. 일부 실험[22]에서 이 말뭉치의 단어 빈도가 Wikipedia와 같이 널리 사용되는 다른 말뭉치보다 단순성에 대한 인간의 판단과 상관 관계가 있음이 밝혀졌기 때문입니다. SUBTLEX는 다양한 영화의 자막에서 추출한 600만 개 이상의 문장으로 구성되어 있습니다. 단어의 Zipf 빈도는 10억 단어당 나타나는 횟수의 밑수 10 로그입니다.
+
+
+
+### Algorithm 1. Lexical simplification framework
+1: S ← Input Sentence
+2: t ← Complexity threshold
+3: ignore list ← Named Entity Identification(S)
+4: LSBert(S,t,ignore list)
+1: S ← 입력 문장
+2: t ← 복잡성 임계값
+3: 무시할 목록 ← 명명된 개체 식별(고유명사)(S)
+4: LSBert(S, t, ignore list) \# LSBert(입력 문장, 복잡성 임계값, 무시할 목록)
+
+
+
+#### PPDB feature.
+Some LS methods generated substitute candidates from PPDB or its subset SimplePPDB [8], [36]. PPDB is a collection of more than 100 million English paraphrase pairs [37]. These pairs were extracted using a bilingual pivoting technique, which assumes that two English phrases that translate to the same foreign phrase have the same meaning. Since LSBert has a better substitution generation than PPDB and SimplePPDB, they cannot help improve the performance of substitution generation. Considering PPDB owns useful information about paraphrase, we try to use PPDB as a feature to rank the candidate substitutions. We adopt a simple strategy for PPDB to rank the candidates. For each candidate ci in C of w, the ranking of ci is 1 if the pair (w, ci) exists in PPDB. Otherwise, the ranking number of ci is n/3.
+#### PPDB 특징.
+일부 LS 방법은 PPDB 또는 해당 하위 집합 SimplePPDB에서 대체 후보를 생성했습니다[8], [36]. PPDB는 1억 개 이상의 영어 의역 쌍의 모음입니다[37]. 이 쌍은 이중 언어 피벗 기술을 사용하여 추출되었으며, 동일한 외국어 구문으로 번역되는 두 개의 영어 구문이 동일한 의미를 갖는다고 가정합니다. LSBert는 PPDB 및 SimplePPDB보다 대체 생성 기능이 우수하므로 대체 생성 성능을 향상시킬 수 없습니다. PPDB가 의역에 대한 유용한 정보를 보유하고 있다는 점을 고려하여 PPDB를 후보 대체 순위를 지정하는 기능으로 사용하려고 합니다. 우리는 PPDB가 후보자 순위를 매기는 간단한 전략을 채택합니다. w의 C에 있는 각 후보 ci에 대해 PPDB에 (w, ci) 쌍이 존재하는 경우 ci의 순위는 1입니다. 그렇지 않으면 ci의 순위 번호는 n/3입니다.
+
+
+
+## 3-4. LSBert Algorithm
+## 3-4. LSBert 알고리즘
+
+
+
+Following CWI, substitute generation, filtering and substitute ranking steps, the overall simplification algorithm LSBert is shown in Algorithm 1 and Algorithm 2. Given the sentence S and complexity threshold t, we first identify named entity using entity identification system. We add entities into ignore list which means these words do not need to be simplified.
+CWI(Complex Word Identification), 대체 생성, 필터링 및 대체 순위 단계에 따라 전체 단순화 알고리즘 LSBert가 알고리즘 1 및 알고리즘 2에 표시됩니다. 문장 S와 복잡성 임계값 t가 주어지면 먼저 개체 식별 시스템를 사용하여 명명된 개체를 식별합니다. 무시 목록은 이러한 단어를 단순화할 필요가 없음을 의미합니다.
+
+
+
+In LSBert, we identify all complex words in sentence s using CWI step excluding ignore list (line 1). If the number of complex words in the sentence s is larger than 0 (line 2), LSBert will try to simplify the top complex word w (line 3). LSBert calls substitute generation (line 4) and substitute ranking (line 5) in turn. LSBert chooses the top substitute (line 6). One important thing to notice is whether LSBert performs the simplification only if the top candidate top has a higher frequency (Frequency feature) or lower loss (Language model feature) than the original word (line 7). When LSBert performs the simplification, it will replace w into top (line 8) and add the word top into ignore list (line 9). After completing the simplification of one word, we will iteratively call LSBert (line 10 and line 12). If the number of complex words in S equals to 0, we will stop calling LSBert (line 15).
+LSBert에서는 무시 목록(라인 1)을 제외하고 CWI 단계를 사용하여 문장의 모든 복잡한 단어를 식별합니다. 문장 s의 복잡한 단어 수가 0보다 크면(라인 2), LSBert는 상위 복잡한 단어 w(라인 3)를 단순화하려고 시도합니다. LSBert는 대체 생성(라인 4)과 대체 순위(라인 5)를 차례로 호출합니다. LSBert는 최상위 대체를 선택합니다(라인 6). 주목해야 할 한 가지 중요한 점은 상위 후보 top이 원래 단어(라인 7)보다 더 높은 빈도(Frequency feature) 또는 더 낮은 손실(Language model feature)을 갖는 경우에만 LSBert가 단순화를 수행하는지 여부입니다. LSBert가 단순화를 수행할 때 w를 top으로 바꾸고(라인 8) top이라는 단어를 무시 목록에 추가합니다(라인 9). 한 단어의 단순화를 완료한 후 LSBert를 반복적으로 호출합니다(라인 10과 라인 12). S의 복잡한 단어 수가 0이면 LSBert 호출을 중지합니다(라인 15).
