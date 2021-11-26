@@ -224,6 +224,7 @@ Frequency-based candidate ranking strategies are one of the most popular choices
 2: t ← Complexity threshold
 3: ignore list ← Named Entity Identification(S)
 4: LSBert(S,t,ignore list)
+
 1: S ← 입력 문장
 2: t ← 복잡성 임계값
 3: 무시할 목록 ← 명명된 개체 식별(고유명사)(S)
@@ -250,3 +251,26 @@ CWI(Complex Word Identification), 대체 생성, 필터링 및 대체 순위 단
 
 In LSBert, we identify all complex words in sentence s using CWI step excluding ignore list (line 1). If the number of complex words in the sentence s is larger than 0 (line 2), LSBert will try to simplify the top complex word w (line 3). LSBert calls substitute generation (line 4) and substitute ranking (line 5) in turn. LSBert chooses the top substitute (line 6). One important thing to notice is whether LSBert performs the simplification only if the top candidate top has a higher frequency (Frequency feature) or lower loss (Language model feature) than the original word (line 7). When LSBert performs the simplification, it will replace w into top (line 8) and add the word top into ignore list (line 9). After completing the simplification of one word, we will iteratively call LSBert (line 10 and line 12). If the number of complex words in S equals to 0, we will stop calling LSBert (line 15).
 LSBert에서는 무시 목록(라인 1)을 제외하고 CWI 단계를 사용하여 문장의 모든 복잡한 단어를 식별합니다. 문장 s의 복잡한 단어 수가 0보다 크면(라인 2), LSBert는 상위 복잡한 단어 w(라인 3)를 단순화하려고 시도합니다. LSBert는 대체 생성(라인 4)과 대체 순위(라인 5)를 차례로 호출합니다. LSBert는 최상위 대체를 선택합니다(라인 6). 주목해야 할 한 가지 중요한 점은 상위 후보 top이 원래 단어(라인 7)보다 더 높은 빈도(Frequency feature) 또는 더 낮은 손실(Language model feature)을 갖는 경우에만 LSBert가 단순화를 수행하는지 여부입니다. LSBert가 단순화를 수행할 때 w를 top으로 바꾸고(라인 8) top이라는 단어를 무시 목록에 추가합니다(라인 9). 한 단어의 단순화를 완료한 후 LSBert를 반복적으로 호출합니다(라인 10과 라인 12). S의 복잡한 단어 수가 0이면 LSBert 호출을 중지합니다(라인 15).
+
+
+
+#### Algorithm 2 LSBert (S,t,ignore list)
+complex words ← CWI(S,t)-ignore list
+if number(complex words)>0 then
+    w ← head(complex words)
+    subs ← Substitution Generation(S,w)
+    subs ← Substitute Ranking(subs)
+    top ← head(subs)
+    if fre(top)>fre(w) or loss(top)<loss(w) then
+        Replace(S,w,top)
+        ignore list.add(w)
+        LSBert(S,t,ignore list)
+    else
+        LSBert(S,t,ignore list)
+    end if
+else
+    return S
+end if
+
+
+
