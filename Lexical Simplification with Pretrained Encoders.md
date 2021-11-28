@@ -87,5 +87,155 @@ In this paper, we will first present a BERT-based LS approach that requires only
 이 백서에서는 먼저 수동 작업 없이 충분히 큰 정규 텍스트 코퍼스만 필요한 BERT 기반 LS 접근 방식을 제시합니다. Pre-training language models(Devlin et al. 2018; Lee et al. 2019; Lample and Conneau 2019)는 많은 관심을 끌었으며 많은 다운스트림 자연어 처리 작업을 개선하는 데 효과적인 것으로 나타났습니다. 우리의 방법은 복잡한 단어에 대한 적절한 단순화를 생성하기 위해 BERT의 최근 발전을 활용합니다. 우리의 방법은 문장의 응집력과 일관성을 유지하기 쉬운 전체 문장을 고려하여 복잡한 단어의 후보를 생성합니다. 이 경우 기존 단계에서 사용된 많은 단계(예: 형태학적 변환 및 대체 선택)가 우리 방법에서 제거되었습니다. 근본적인 특성으로 인해 우리의 접근 방식은 많은 언어에 적용될 수 있습니다.
 
 
---*------------- 다음 시간에 -*-*--------------
+
 ## 3. Unsupervised Lexical Simplification
+## 3. 감독되지 않은 어휘 단순화
+
+In this section, we briefly summarize the BERT model, and then describe how we extend it to do lexical simplification.
+이 섹션에서는 BERT 모델을 간략하게 요약한 다음 이를 확장하여 어휘 단순화를 수행하는 방법을 설명합니다.
+
+
+
+### 3-1. The BERT model
+### 3-1. BERT 모델
+
+BERT (Devlin et al. 2018) is trained on a masked language modeling (MLM) objective, which is combination of a Markov Random Field language model on a set of discrete tokens with pseudo log-likelihood (Wang and Cho 2019). Unlike a traditional language modeling objective of predicting the next word in a sequence given the history, masked language modeling predicts a word given its left and right context. Let S = w1, ...,wl, ...,wL be a set of discrete tokens, wl ∈ V , where V = {v1, ..., vM} is the vocabulary. A joint probability distribution of a given sequence X can be calculated by:
+BERT(Devlin et al. 2018)는 pseudo log-likelihood(랜덤변수집합의 결합확률분포에 대한 근사치)이 있는 이산 토큰 세트에 대한 Markov Random Field 언어 모델의 조합인 MLM(masked Language Modeling) 목표에 대해 훈련되었습니다(Wang and Cho 2019). 주어진 기록이 있는 시퀀스에서 다음 단어를 예측하는 기존의 언어 모델링 목표와 달리 마스크 언어 모델링은 왼쪽 및 오른쪽 컨텍스트가 주어지면 단어를 예측합니다. S = w1, ...,wl, ...,wL 이산 토큰 집합 wl ∈ V 라고 가정합니다. 여기서 V = {v1, ..., vM}은 어휘입니다. 주어진 시퀀스 X의 결합 확률 분포(=결합분포)는 다음과 같이 계산할 수 있습니다.
+
+
+#### p(S|θ) = 1 / Z(θ) L∏l=1φl(w|θ) ∝ exp(L∑l=1log φl(w|θ))
+
+
+where φl(w) is the l’th potential function with parameters θ, and Z is the partition function.
+여기서 φl(w)는 매개변수 θ가 있는 l' 전위 함수이고 Z는 분할 함수입니다.
+
+The log potential functions for the l’th token are defined by:
+l' 토큰에 대한 잠재적 로그 함수는 다음과 같이 정의됩니다.
+
+
+#### log φl(w|θ) = wlT fθ(S\l)
+
+
+where wl is one-hot vector for the l’the token, and S\l = (w1, ...,wl−1,[MASK],wl+1, ...,wL)
+여기서 wl은 l' 토큰에 대한 원-핫 벡터이고 S\l = (w1, ...,wl−1,[MASK],wl+1, ...,wL)
+
+
+#### L(θ) = ES∼D L∑l=1log p(wl|S\l; θ)
+
+
+The function f(S\l) ∈ RM is a multi-layer bidirectional transformer model (Vaswani et al. 2017). See (Devlin et al. 2018) for details. The model is trained to approximately maximize the pseudo log-likelihood
+함수 f(S\l) ∈ RM은 multi-layer bidirectional transformer model입니다(Vaswani et al. 2017). 자세한 내용은 (Devlin et al. 2018)을 참조하십시오. 모델은 의사 로그 가능성을 대략적으로 최대화하도록 학습됩니다.
+
+
+
+where D is a set of training examples. In practice, we can stochastically optimize the logloss (computed from the softmax predicted by the f function) by sampling tokens as well as training sentences.
+여기서 D는 훈련 예제 세트입니다. 실제로, 우리는 토큰과 훈련 문장을 샘플링하여 logloss(f 함수에 의해 예측된 softmax에서 계산됨)를 확률적으로 최적화할 수 있습니다.
+
+
+
+Besides, BERT also uses a “next sentence prediction” task that jointly pre-trains text-pair representations. BERT accomplishes this by prepending every sentence with a special classification token, [CLS], and by combining sentences with a special separator token, [SEP]. The final hidden state corresponding to the [CLS] token is used as the total sequence representation from which we predict a label for classification tasks, or which may otherwise be overlooked.
+게다가 BERT는 텍스트 쌍 표현을 공동으로 사전 훈련하는 "다음 문장 예측" 작업도 사용합니다. BERT는 모든 문장 앞에 특수 분류 토큰 [CLS]을 추가하고 문장을 특수 구분 토큰 [SEP]과 결합하여 이를 수행합니다. [CLS] 토큰에 해당하는 최종 숨겨진 상태는 분류 작업에 대한 레이블을 예측하거나 간과할 수 있는 전체 시퀀스 표현으로 사용됩니다.
+
+
+
+## 3-2. Simplification Candidate generation
+## 3-2. 단순화 후보 생성
+
+
+
+Simplification candidate generation is used to produce candidate substitutions for each complex word. Due to the fundamental nature of masked language modeling (MLM), we mask the complex word w of the sentence S and get the probability distribution of the vocabulary p(·|S\{w}) corresponding to the masked word w using MLM. Therefore, we can try to use MLM for simplification candidate generation.
+단순화 후보 생성은 각 복합 단어에 대한 후보 대체를 생성하는 데 사용됩니다. Masked Language Modeling(MLM)의 근본적인 특성으로 인해 문장 S의 복잡한 단어 w를 마스크하고 MLM을 사용하여 마스크된 단어 w에 해당하는 어휘 p(·|S\{w})의 확률 분포를 얻습니다. 따라서 단순화 후보 생성을 위해 MLM을 사용하려고 할 수 있습니다.
+
+
+
+For the complex word w in a sentence S, we mask the word w of S as a new sequence S`. If we directly feed S` into MLM, the probability of the vocabulary p(·|S`\{ti}) corresponding to the complex word w only considers the context regardless of the influence of the complex word w.
+문장 S의 복잡한 단어 w에 대해 S의 단어 w를 새로운 시퀀스 S`로 마스킹합니다. S`를 MLM에 직접 입력하면 복합어 w에 해당하는 어휘 p(·|S`\{ti})의 확률은 복합어 w의 영향에 관계없이 컨텍스트만 고려합니다.
+
+
+
+Since BERT is adept at dealing with sentence pairs due to the ”next sentence prediction” adopted by BERT. We concatenate the original sequence S and S` as a sentence pair, and feed the sentence pair S, S` into the BERT to obtain the probability distribution of the vocabulary p(·|S, S`\{w}) corresponding to the mask word. In this way, the higher probability words in p(·|S, S`\{w}) corresponding to the mask word not only consider the complex word itself, but also can fit the context of the complex word. Finally, we select as simplification candidates the top 10 words from p(·|S, S`\{w}), excluding the morphological derivations of w. In all experiments, we use BERT-Large, Uncased (Whole Word Masking) pre-trained on BooksCorpus and English Wikipedia.
+BERT는 BERT가 채택한 "다음 문장 예측"으로 인해 문장 쌍을 다루는 데 능숙하기 때문입니다. 원래 시퀀스 S와 S`를 문장 쌍으로 연결하고 문장 쌍 S, S`를 BERT에 공급하여 해당하는 어휘 p(·|S, S`\{w})의 확률 분포를 얻습니다. 마스크 단어. 이와 같이 마스크 단어에 해당하는 p(·|S, S`\{w})에서 확률이 높은 단어는 복합어 자체를 고려할 뿐만 아니라 복합어의 문맥에도 맞출 수 있습니다. 마지막으로 w의 형태학적 파생물을 제외하고 p(·|S, S`\{w})에서 상위 10개 단어를 단순화 후보로 선택합니다. 모든 실험에서 BooksCorpus 및 English Wikipedia에서 사전 훈련된 BERT-Large, Uncased(Whole Word Masking)를 사용합니다.
+
+
+
+Suppose that there is a sentence ”the cat perched on the mat” and the complex word ”perched”, we can get the top three simplification candidate words ”sat, seated, hopped”. See Figure 2 for an illustration. We can see the three candidates not only have a strong correlation with the complex word, but also hold the cohesion and coherence properties of the sentence. If we adopt the existing state-of-the-art method based on word embeddings proposed by (Glavaˇs and ˇ Stajner 2015), the top three substitution words are ”atop, overlooking, precariously”. Very obviously, our method generates better candidates.
+"the cat perched on the mat"라는 문장과 "perched"라는 복합어가 있다고 가정하면, 상위 3개의 단순화 후보 단어 "sat, seated, hopped"를 얻을 수 있습니다. 그림 2를 참조하십시오. 세 후보가 복잡한 단어와 강한 상관관계를 가질 뿐만 아니라 문장의 응집력과 일관성 속성을 가지고 있음을 알 수 있습니다. (Glavaˇs and ˇ Stajner 2015)에서 제안한 단어 임베딩을 기반으로 한 기존의 최첨단 방법을 채택하면 상위 3개 대체 단어는 "atop, overlooking, precariously"입니다. 매우 분명히, 우리의 방법은 더 나은 후보자를 생성합니다.
+
+
+
+Figure 2: Substitution generation of BERT-LS for the target complex word prediction, or cloze task. The input text is ”the cat perched on the mat” with complex word ”perched”. [CLS] and [SEP] are two special symbols in BERT,  here [CLS] the token for classification (will not be used in this paper) and [SEP] is a special separator token.
+그림 2: 대상 복합 단어 예측 또는 클로즈 작업에 대한 BERT-LS의 대체 생성. 입력 텍스트는 복합 단어 "perched"가 포함된 "the cat perched on the mat"입니다. [CLS] 및 [SEP]는 BERT의 두 가지 특수 기호입니다. 여기서 [CLS] 분류용 토큰(이 백서에서는 사용되지 않음)이고 [SEP]는 특수 구분 토큰입니다.
+
+
+
+## 3-2. Substitution Ranking
+## 3-2. 대체 순위
+
+
+
+The substitution ranking of the lexical simplification pipeline is to decide which of the candidate substitutions that fit the context of a complex word is the simplest (Paetzold and Specia 2017b).We rank the candidate substitutions based on the following features. Each of the features captures one aspect of the suitability of the candidate word to replace the complex word.
+어휘 단순화 파이프라인의 대체 순위는 복잡한 단어의 컨텍스트에 맞는 후보 대체 중 어느 것이 가장 간단한지를 결정하는 것입니다(Paetzold and Specia 2017b). 다음 기능을 기반으로 후보 대체 순위를 지정합니다. 각 기능은 복잡한 단어를 대체하기 위한 후보 단어의 적합성의 한 측면을 캡처합니다.
+
+
+
+#### BERT prediction
+#### BERT 예측
+On this step of simplification candidate generation, we obtain the probability distribution of the vocabulary corresponding to the mask word p(·|S, S`\{w}). The higher the probability, the more relevant the candidate for the original sentence. The candidate substitutions can be ranked according to their probability.
+이 단순화 후보 생성 단계에서 마스크 단어 p(·|S, S`\{w})에 해당하는 어휘의 확률 분포를 얻습니다. 확률이 높을수록 원래 문장의 후보와 관련성이 높아집니다. 후보 교체는 확률에 따라 순위가 매겨질 수 있습니다.
+
+
+
+#### Language model features
+#### 언어 모델 기능
+A simplification candidate should fit into the sequence of words preceding and following the original word. Different n-gram language model, we cannot compute the probability of a sentence or sequence of words using MLM. Let W = w−m, ...,w−1, w, w1, ...,wm be the context of the original word w. We adopt a new strategy to compute the likelihood of W. We first replace the original word w into the simplification candidate. We then mask one word ofW from front to back, and feed into MLM to compute the cross-entropy loss. Finally, we rank all simplification candidates based on the average loss of W. The lower the loss, the simplification candidate is a good substitute for the original word. We use as context a symmetric window of size five around the complex word.
+단순화 후보는 원래 단어의 앞뒤에 있는 단어 시퀀스에 맞아야 합니다. 다른 n-gram 언어 모델에서는 MLM을 사용하여 문장이나 단어 시퀀스의 확률을 계산할 수 없습니다. W = w−m, ...,w−1, w, w1, ...,wm을 원래 단어 w의 컨텍스트라고 합시다. 우리는 W의 가능성을 계산하기 위해 새로운 전략을 채택합니다. 먼저 원래 단어 w를 단순화 후보로 바꿉니다. 그런 다음 W의 한 단어를 앞에서 뒤로 마스킹하고 MLM에 입력하여 교차 엔트로피 손실을 계산합니다. 마지막으로 W의 평균 손실을 기반으로 모든 단순화 후보의 순위를 지정합니다. 손실이 낮을수록 단순화 후보는 원래 단어를 대체하는 좋은 방법입니다. 복잡한 단어 주위에 크기가 5인 대칭 창을 컨텍스트로 사용합니다.
+
+
+
+#### Semantic similarity
+#### 의미적 유사성
+The feature is calculated as the cosine between the fastText vector of the original word and the fastText vector of the candidate substitutions. The higher the similarity, the more similar the two words.
+특징은 원래 단어의 fastText 벡터와 후보 대체의 fastText 벡터 사이의 코사인으로 계산됩니다. 유사도가 높을수록 두 단어가 더 유사합니다.
+
+
+
+#### Frequency feature
+#### 빈도 특징
+Frequency-based candidate ranking strategies are one of the most popular choices by lexical simplification and can be quite effective. In general, the more frequency a word is used, the most familiar it is to readers. We use word frequency estimates from the Wikipedia and the Children’s Book Test (CBT). As the size of Wikipedia is larger than CBT, we only choose the top 12 million texts of Wikipedia for matching the size.
+빈도 기반 후보 순위 전략은 어휘 단순화에 의해 가장 인기 있는 선택 중 하나이며 매우 효과적일 수 있습니다. 일반적으로 단어를 더 많이 사용할수록 독자에게 가장 친숙합니다. Wikipedia 및 CBT(Children's Book Test)의 단어 빈도 추정치를 사용합니다. Wikipedia의 크기가 CBT보다 크기 때문에 크기 일치를 위해 Wikipedia의 상위 1200만 텍스트만 선택합니다.
+
+
+
+## 3-4. Simplification Algorithm
+## 3-4. 단순화 알고리즘
+
+
+The overall simplification algorithm BERT-LS is shown in Algorithm 1. In this paper, we are not focused on identifying complex words (Paetzold and Specia 2017b), which is a separate task. For each complex word, we first get simplification candidates using BERT after preprocessing the original sequence (lines 1-4). Afterward, BERT-LS computes various rankings for each of the simplification candidates using each of the features, and then scores each candidate by averaging all its rankings (lines 5-13). We choose the top candidate with the highest average rank over all features as the simplification replacement (line 15).
+전체 단순화 알고리즘 BERT-LS는 알고리즘 1에 나와 있습니다. 이 논문에서는 별도의 작업인 복잡한 단어를 식별하는 데 중점을 두지 않습니다(Paetzold and Specia 2017b). 각 복잡한 단어에 대해 원래 시퀀스(1-4행)를 전처리한 후 BERT를 사용하여 먼저 단순화 후보를 얻습니다. 그 후, BERT-LS는 각 기능을 사용하여 각 단순화 후보에 대한 다양한 순위를 계산한 다음 모든 순위를 평균하여 각 후보의 점수를 매깁니다(5-13행). 단순화 대체로 모든 기능에 대해 평균 순위가 가장 높은 최상위 후보를 선택합니다(15행).
+
+
+S = "John composed these verses."
+w = "verses."
+
+def simplify(S, w):
+    S` = replace(S, w, '[MASK]')
+    S_S` = '[CLS]' + S + '[SEP]' + S` + '[SEP]'
+    w에 대한 예측 확률분포 = BERT(S, S`)
+    scs = w에 대한 확률분포중에 제일 확률이 높은거 열 개
+    all_ranks = []
+
+    for :
+        scores = []
+        
+        for sc in scs(확률이 제일 높은 10개 단어):
+            scores.append(스코어 계산하는 함수(sc))
+
+        rank = rank_numbers(scores) # 점수별로 순위를 매기는 함수
+        all_ranks = []
+        all_ranks.append(rank)
+
+avg_rank = average(all_ranks) # 순위값에 대한 평균
+best = argmax(avg_rank) # 제일 순위가 큰 값에 대한 인덱스를 뽑아오는 함수
+
+return best # int // 0
+
