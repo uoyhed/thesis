@@ -100,7 +100,7 @@ An attention function can be described as mapping a query and a set of key-value
 
 
 
-## 3-2-1. Scaled Dot-Product Attention
+### 3-2-1. Scaled Dot-Product Attention
 
 
 
@@ -119,11 +119,60 @@ The two most commonly used attention functions are additive attention [2], and d
 
 
 
-While for small values of dk the two mechanisms perform similarly, additive attention outperforms
-dot product attention without scaling for larger values of dk [3]. We suspect that for large values of
-dk, the dot products grow large in magnitude, pushing the softmax function into regions where it has
-extremely small gradients 4
-. To counteract this effect, we scale the dot products by √
-1
-dk
-.
+While for small values of dk the two mechanisms perform similarly, additive attention outperforms dot product attention without scaling for larger values of dk [3]. We suspect that for large values of dk, the dot products grow large in magnitude, pushing the softmax function into regions where it has extremely small gradients4. To counteract this effect, we scale the dot products by 1/√dk.
+작은 값의 dk에 대해 두 메커니즘이 유사하게 작동하는 반면, 가산적 주의는 더 큰 값의 dk에 대한 스케일링 없이 내적 주의를 능가합니다[3]. dk의 큰 값에 대해 내적은 크기가 크게 증가하여 softmax 함수를 매우 작은 기울기가 있는 영역으로 밀어넣는다고 생각합니다. 이 효과를 상쇄하기 위해 내적을 1/√dk만큼 스케일링합니다.
+
+4To illustrate why the dot products get large, assume that the components of q and k are independent random variables with mean 0 and variance 1. Then their dot product, q·k = ∑dk i=1 qiki, has mean 0 and variance dk.
+내적이 커지는 이유를 설명하기 위해 q와 k의 성분이 평균이 0이고 분산이 1인 독립 확률 변수라고 가정합니다. 그러면 내적 q·k = ∑dk i=1 qiki는 평균 0과 분산 dk를 갖습니다.
+
+
+
+### 3-2-2. Multi-Head Attention
+
+
+
+Instead of performing a single attention function with dmodel-dimensional keys, values and queries, we found it beneficial to linearly project the queries, keys and values h times with different, learned linear projections to dk, dk and dv dimensions, respectively. On each of these projected versions of queries, keys and values we then perform the attention function in parallel, yielding dv-dimensional output values. These are concatenated and once again projected, resulting in the final values, as depicted in Figure 2.
+dmodel 차원 키, 값 및 쿼리로 단일 주의 기능을 수행하는 대신 각각 dk, dk 및 dv 차원에 대해 학습된 서로 다른 선형 프로젝션으로 쿼리, 키 및 값을 h번 선형 프로젝션하는 것이 유익하다는 것을 발견했습니다. 쿼리, 키 및 값의 이러한 프로젝션 버전 각각에 대해 주의 기능을 병렬로 수행하여 dv 차원 출력 값을 생성합니다. 이것들은 연결되고 다시 한 번 투영되어 그림 2와 같이 최종 값이 됩니다.
+
+
+
+Multi-head attention allows the model to jointly attend to information from different representation subspaces at different positions. With a single attention head, averaging inhibits this.
+Multi-head attention을 통해 모델은 서로 다른 위치에 있는 서로 다른 표현 부분 공간의 정보에 공동으로 주의를 기울일 수 있습니다. a single attention head의 경우 평균화는 이를 억제합니다.
+
+
+
+In this work we employ h = 8 parallel attention layers, or heads. For each of these we use dk = dv = dmodel/h = 64. Due to the reduced dimension of each head, the total computational cost is similar to that of single-head attention with full dimensionality.
+이 작업에서 우리는 h = 8개의 parallel attention 레이어 또는 헤드를 사용합니다. 이들 각각에 대해 dk = dv = dmodel/h = 64를 사용합니다. 각 헤드의 축소된 차원으로 인해 총 계산 비용은 전체 차원을 갖는 single-head attention 비용과 유사합니다.
+
+
+
+### 3-2-3 Applications of Attention in our Model
+### 3-2-3 우리 모델에서의 Attention 적용
+
+
+
+The Transformer uses multi-head attention in three different ways:
+Transformer는 다음과 같은 세 가지 방식으로 multi-head attention을 사용합니다.
+
+
+
+- In "encoder-decoder attention" layers, the queries come from the previous decoder layer, and the memory keys and values come from the output of the encoder. This allows every position in the decoder to attend over all positions in the input sequence. This mimics the  typical encoder-decoder attention mechanisms in sequence-to-sequence models such as [38, 2, 9].
+- "encoder-decoder attention" 계층에서 쿼리는 이전 디코더 계층에서 가져오고 메모리 키와 값은 인코더의 출력에서 가져옵니다. 이를 통해 디코더의 모든 위치가 입력 시퀀스의 모든 위치를 처리할 수 있습니다. 이는 [38, 2, 9]와 같은 sequence-to-sequence 모델에서 일반적인 encoder-decoder attention 메커니즘을 모방합니다.
+
+
+
+- The encoder contains self-attention layers. In a self-attention layer all of the keys, values and queries come from the same place, in this case, the output of the previous layer in the encoder. Each position in the encoder can attend to all positions in the previous layer of the encoder.
+- 인코더에는 self-attention 레이어가 포함되어 있습니다. self-attention layer에서 모든 키, 값 및 쿼리는 같은 위치에서 옵니다. 이 경우 인코더에서 이전 레이어의 출력입니다. 인코더의 각 위치는 인코더의 이전 계층에 있는 모든 위치를 처리할 수 있습니다.
+
+
+
+- Similarly, self-attention layers in the decoder allow each position in the decoder to attend to all positions in the decoder up to and including that position. We need to prevent leftward information flow in the decoder to preserve the auto-regressive property. We implement this inside of scaled dot-product attention by masking out (setting to -∞) all values in the input of the softmax which correspond to illegal connections. See Figure 2.
+- 유사하게, 디코더의 self-attention layer는 디코더의 각 위치가 디코더의 모든 위치에 해당 위치를 포함하도록 합니다. 자동 회귀 속성을 유지하려면 디코더에서 왼쪽으로 정보 흐름을 방지해야 합니다. 잘못된 연결에 해당하는 softmax 입력의 모든 값을 마스크 아웃(-∞로 설정)하여 scaled dot-product attention 내부에서 이것을 구현합니다. 그림 2를 참조하십시오.
+
+
+
+## 3-3 Position-wise Feed-Forward Networks
+## 3-3 위치별 순방향 신경망
+
+
+
